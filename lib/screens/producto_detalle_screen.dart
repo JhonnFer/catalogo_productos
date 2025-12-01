@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/producto.dart';
 
 class ProductoDetalleScreen extends StatefulWidget {
-  final Producto producto; // <-- Parámetro requerido
+  final Producto producto;
 
   const ProductoDetalleScreen({super.key, required this.producto});
 
@@ -16,8 +16,6 @@ class _ProductoDetalleScreenState extends State<ProductoDetalleScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.white,
@@ -26,21 +24,30 @@ class _ProductoDetalleScreenState extends State<ProductoDetalleScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // -------------------------
-            // IMAGEN + STACK
+            // ICONO DEL PRODUCTO + STACK
             // -------------------------
             SizedBox(
               height: 400,
               width: double.infinity,
               child: Stack(
                 children: [
-                  // Imagen del producto con Hero
+                  // Hero con icono
                   Hero(
-                    tag: widget.producto.nombre, // Hero dinámico
-                    child: Image.network(
-                      widget.producto.imagenUrl,
-                      fit: BoxFit.cover,
-                      height: 400,
+                    tag: widget.producto.nombre,
+                    child: Container(
                       width: double.infinity,
+                      height: 400,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: const BorderRadius.vertical(
+                          bottom: Radius.circular(24),
+                        ),
+                      ),
+                      child: Icon(
+                        _getIcono(widget.producto.imagenUrl),
+                        size: 120,
+                        color: Colors.grey[600],
+                      ),
                     ),
                   ),
                   // Degradado
@@ -242,5 +249,25 @@ class _ProductoDetalleScreenState extends State<ProductoDetalleScreen> {
         ),
       ),
     );
+  }
+
+  // Método auxiliar para obtener iconos según tipo
+  IconData _getIcono(String tipo) {
+    switch (tipo) {
+      case 'laptop':
+        return Icons.laptop;
+      case 'headphones':
+        return Icons.headphones;
+      case 'watch':
+        return Icons.watch;
+      case 'camera':
+        return Icons.camera_alt;
+      case 'keyboard':
+        return Icons.keyboard;
+      case 'mouse':
+        return Icons.mouse;
+      default:
+        return Icons.shopping_bag;
+    }
   }
 }
